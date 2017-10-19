@@ -278,3 +278,16 @@ def usage(request, image_id):
         'image': image,
         'used_by': used_by
     })
+
+
+def renditions(request, image_id):
+    image = get_object_or_404(get_image_model(), id=image_id)
+    renditions = image.renditions.all()
+
+    # rend = renditions.first()
+    # import ipdb; ipdb.set_trace()
+
+    return render(request, "wagtailimages/images/renditions.html", {
+        'image': image,
+        'renditions': renditions,
+    })

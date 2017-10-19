@@ -1,0 +1,32 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n %}
+{% block titletag %}{% blocktrans with title=image.title %}Usage of {{ title }}{% endblocktrans %}{% endblock %}
+{% block content %}
+    {% trans "Renditions of" as renditions_str %}
+    {% include "wagtailadmin/shared/header.html" with title=renditions_str subtitle=image.title %}
+
+    <div class="nice-padding">
+        <table class="listing">
+            <col width="20%"/>
+            <col />
+            <thead>
+                <tr>
+                    <th>{% trans "Resizing" %}</th>
+                    <th>{% trans "Image" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rendition in renditions %}
+                    <tr>
+                        <td>
+                            {{ rendition.filter_spec }}
+                        </td>
+                        <td class="title" valign="top">
+                            {{ rendition.img_tag }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

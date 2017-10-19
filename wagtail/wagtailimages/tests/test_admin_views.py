@@ -465,6 +465,32 @@ class TestImageEditView(TestCase, WagtailTestUtils):
         self.assertContains(response, 'data-original-width="1024"')
 
 
+class TestImageRenditionsView(TestCase, WagtailTestUtils):
+
+    def setUp(self):
+        self.login()
+
+        # Create an image to edit
+        self.image = Image.objects.create(
+            title="Test image",
+            file=get_test_image_file(),
+        )
+
+        self.storage = self.image.file.storage
+
+    def update_from_db(self):
+        self.image = Image.objects.get(pk=self.image.pk)
+
+    def get(self, params={}):
+        return self.client.get(
+            reverse('wagtailimages:image_renditions', args=(self.image.id,)), params)
+
+    def test_simple(self):
+        response = self.get()
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'wagtailimages/images/renditions.html')
+
+
 class TestImageDeleteView(TestCase, WagtailTestUtils):
     def setUp(self):
         self.login()
